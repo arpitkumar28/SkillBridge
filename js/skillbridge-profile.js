@@ -23,6 +23,113 @@ const skillsToShare = document.getElementById('skillsToShare');
 const skillsToLearn = document.getElementById('skillsToLearn');
 const stats = document.querySelectorAll('.stat-value');
 
+// Skill Box Add/Remove Logic
+const skillBoxContainer = document.getElementById('skillBoxContainer');
+const newSkillInput = document.getElementById('newSkillInput');
+const addSkillBtn = document.getElementById('addSkillBtn');
+
+// Separate Skill Box Add/Remove Logic for Share and Learn
+const skillsToShareBox = document.getElementById('skillsToShareBox');
+const newSkillToShareInput = document.getElementById('newSkillToShareInput');
+const addSkillToShareBtn = document.getElementById('addSkillToShareBtn');
+const skillsToLearnBox = document.getElementById('skillsToLearnBox');
+const newSkillToLearnInput = document.getElementById('newSkillToLearnInput');
+const addSkillToLearnBtn = document.getElementById('addSkillToLearnBtn');
+
+let skills = [];
+let shareSkills = [];
+let learnSkills = [];
+
+function renderSkills() {
+  skillBoxContainer.innerHTML = '';
+  skills.forEach((skill, idx) => {
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'skill-box';
+    skillDiv.innerHTML = `
+      <span>${skill}</span>
+      <button class="remove-skill-btn" title="Remove skill" data-idx="${idx}">&times;</button>
+    `;
+    skillBoxContainer.appendChild(skillDiv);
+  });
+}
+
+function renderShareSkills() {
+  skillsToShareBox.innerHTML = '';
+  shareSkills.forEach((skill, idx) => {
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'skill-box';
+    skillDiv.innerHTML = `
+      <span>${skill}</span>
+      <button class="remove-skill-btn" title="Remove skill" data-idx="${idx}">&times;</button>
+    `;
+    skillsToShareBox.appendChild(skillDiv);
+  });
+}
+
+function renderLearnSkills() {
+  skillsToLearnBox.innerHTML = '';
+  learnSkills.forEach((skill, idx) => {
+    const skillDiv = document.createElement('div');
+    skillDiv.className = 'skill-box';
+    skillDiv.innerHTML = `
+      <span>${skill}</span>
+      <button class="remove-skill-btn" title="Remove skill" data-idx="${idx}">&times;</button>
+    `;
+    skillsToLearnBox.appendChild(skillDiv);
+  });
+}
+
+addSkillBtn.addEventListener('click', () => {
+  const skill = newSkillInput.value.trim();
+  if (skill && !skills.includes(skill)) {
+    skills.push(skill);
+    newSkillInput.value = '';
+    renderSkills();
+  }
+});
+
+skillBoxContainer.addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove-skill-btn')) {
+    const idx = parseInt(e.target.getAttribute('data-idx'));
+    skills.splice(idx, 1);
+    renderSkills();
+  }
+});
+
+addSkillToShareBtn.addEventListener('click', () => {
+  const skill = newSkillToShareInput.value.trim();
+  if (skill && !shareSkills.includes(skill)) {
+    shareSkills.push(skill);
+    newSkillToShareInput.value = '';
+    renderShareSkills();
+  }
+});
+
+skillsToShareBox.addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove-skill-btn')) {
+    const idx = parseInt(e.target.getAttribute('data-idx'));
+    shareSkills.splice(idx, 1);
+    renderShareSkills();
+  }
+});
+
+addSkillToLearnBtn.addEventListener('click', () => {
+  const skill = newSkillToLearnInput.value.trim();
+  if (skill && !learnSkills.includes(skill)) {
+    learnSkills.push(skill);
+    newSkillToLearnInput.value = '';
+    renderLearnSkills();
+  }
+});
+
+skillsToLearnBox.addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove-skill-btn')) {
+    const idx = parseInt(e.target.getAttribute('data-idx'));
+    learnSkills.splice(idx, 1);
+    renderLearnSkills();
+  }
+});
+
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     userName.textContent = "Not logged in";
@@ -37,7 +144,6 @@ onAuthStateChanged(auth, async (user) => {
   let displayName = user.displayName || "";
   let bio = "";
   let teachSkills = [];
-  let learnSkills = [];
   let connections = 0;
   try {
     const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -46,8 +152,6 @@ onAuthStateChanged(auth, async (user) => {
       if (data.displayName) displayName = data.displayName;
       if (data.bio) bio = data.bio;
       if (data.skillsTeach) teachSkills = data.skillsTeach;
-      if (data.skillsLearn) learnSkills = data.skillsLearn;
-      if (data.connections) connections = data.connections;
     }
   } catch (e) {
     // fallback to auth data
@@ -58,13 +162,14 @@ onAuthStateChanged(auth, async (user) => {
   skillsToShare.innerHTML = (teachSkills.length > 0)
     ? teachSkills.map(skill => `<span class="skill-chip">${skill}</span>`).join(' ')
     : '<span style="color:#aaa;">No skills listed</span>';
-  // Render learn skills
-  skillsToLearn.innerHTML = (learnSkills.length > 0)
-    ? learnSkills.map(skill => `<span class="skill-chip">${skill}</span>`).join(' ')
-    : '<span style="color:#aaa;">No skills listed</span>';
   // Update stats
   stats[0].textContent = teachSkills.length;
   stats[1].textContent = learnSkills.length;
   stats[2].textContent = connections || 0;
 });
+
+// Optionally, initialize with some skills or load from storage
+renderSkills();
+renderShareSkills();
+renderLearnSkills();
 

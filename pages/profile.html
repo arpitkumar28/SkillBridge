@@ -10,19 +10,25 @@
 </head>
 <body class="light-theme">
     <nav class="navbar">
-        <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo">
-        <span class="brand">SkillBridge</span>
-        <div class="menu">
-            <a href="index.html" class="menu-link">Home</a>
-            <a href="#about" class="menu-link">About</a>
-            <a href="#footer" class="menu-link">Contact</a>
+        <div class="navbar-left">
+            <div class="navbar-brand">
+                <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo">
+                <span class="brand">SkillBridge</span>
+            </div>
+        </div>
+        <div class="menu-right">
+            <div class="menu">
+                <a href="index.html" class="menu-link">Home</a>
+                <a href="#about" class="menu-link">About</a>
+                <a href="#footer" class="menu-link">Contact</a>
+            </div>
         </div>
     </nav>
 
     <main class="profile-container">
         <div class="profile-card" id="profileCard">
             <div class="profile-avatar-section">
-                <img id="profilePic" src="#" alt="Profile Picture" class="profile-avatar-img">
+                <img id="profilePic" src="../assets/profile-placeholder.png" alt="Profile Picture" class="profile-avatar-img">
                 <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
                 <button class="edit-avatar-btn" id="editAvatarBtn" title="Change profile picture">
                     <i class="fas fa-camera"></i>
@@ -31,19 +37,26 @@
             <div class="profile-info-section">
                 <h1 id="userName">Your Name</h1>
                 <p id="userBio">Your bio or tagline</p>
-                <div class="profile-skills">
-                    <div>
-                        <strong>Skills to Share:</strong>
-                        <span id="skillsToShare"></span>
-                    </div>
-                    <div>
-                        <strong>Skills to Learn:</strong>
-                        <span id="skillsToLearn"></span>
-                    </div>
-                </div>
                 <button class="edit-profile-btn" id="editProfileBtn">
                     <i class="fas fa-edit"></i> Edit Profile
                 </button>
+            </div>
+            <div class="skill-box-section">
+                <h3>Manage Your Skills</h3>
+                <div class="skill-boxes-inline-wrapper">
+                    <div class="skill-inline-group">
+                        <label for="newSkillToShareInput"><strong>Skill to Share:</strong></label>
+                        <div id="skillsToShareBox" class="skill-box-container"></div>
+                        <input type="text" id="newSkillToShareInput" placeholder="Add a skill to share">
+                        <button id="addSkillToShareBtn" class="btn btn-primary">Add</button>
+                    </div>
+                    <div class="skill-inline-group">
+                        <label for="newSkillToLearnInput"><strong>Skill to Learn:</strong></label>
+                        <div id="skillsToLearnBox" class="skill-box-container"></div>
+                        <input type="text" id="newSkillToLearnInput" placeholder="Add a skill to learn">
+                        <button id="addSkillToLearnBtn" class="btn btn-primary">Add</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="profileEditModal" class="modal" style="display:none;">
