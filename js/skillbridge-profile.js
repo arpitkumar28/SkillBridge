@@ -2,6 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
 
 // Your Firebase config
 const firebaseConfig = {
@@ -13,163 +14,212 @@ const firebaseConfig = {
   appId: "1:208543781402:web:671bc3ebdf06fc6b18b7a3",
   measurementId: "G-DPPSFN4CLG"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
-const userName = document.getElementById('userName');
-const userBio = document.getElementById('userBio');
-const skillsToShare = document.getElementById('skillsToShare');
-const skillsToLearn = document.getElementById('skillsToLearn');
-const stats = document.querySelectorAll('.stat-value');
+window.addEventListener('DOMContentLoaded', function() {
+  // DOM elements
+  const userName = document.getElementById('userName');
+  const userEmail = document.getElementById('userEmail');
+  const userBio = document.getElementById('userBio');
+  const skillsToShareBox = document.getElementById('skillsToShareBox');
+  const skillsToLearnBox = document.getElementById('skillsToLearnBox');
+  const addSkillToShareBtn = document.getElementById('addSkillToShareBtn');
+  const addSkillToLearnBtn = document.getElementById('addSkillToLearnBtn');
+  const editProfileBtn = document.getElementById('editProfileBtn');
+  const profileEditModal = document.getElementById('profileEditModal');
+  const closeEditModal = document.getElementById('closeEditModal');
+  const profileEditForm = document.getElementById('profileEditForm');
+  const profilePic = document.getElementById('profilePic');
 
-// Skill Box Add/Remove Logic
-const skillBoxContainer = document.getElementById('skillBoxContainer');
-const newSkillInput = document.getElementById('newSkillInput');
-const addSkillBtn = document.getElementById('addSkillBtn');
+  let currentUserData = {};
+  let currentUser = null;
 
-// Separate Skill Box Add/Remove Logic for Share and Learn
-const skillsToShareBox = document.getElementById('skillsToShareBox');
-const newSkillToShareInput = document.getElementById('newSkillToShareInput');
-const addSkillToShareBtn = document.getElementById('addSkillToShareBtn');
-const skillsToLearnBox = document.getElementById('skillsToLearnBox');
-const newSkillToLearnInput = document.getElementById('newSkillToLearnInput');
-const addSkillToLearnBtn = document.getElementById('addSkillToLearnBtn');
-
-let skills = [];
-let shareSkills = [];
-let learnSkills = [];
-
-function renderSkills() {
-  skillBoxContainer.innerHTML = '';
-  skills.forEach((skill, idx) => {
-    const skillDiv = document.createElement('div');
-    skillDiv.className = 'skill-box';
-    skillDiv.innerHTML = `
-      <span>${skill}</span>
-      <button class="remove-skill-btn" title="Remove skill" data-idx="${idx}">&times;</button>
-    `;
-    skillBoxContainer.appendChild(skillDiv);
-  });
-}
-
-function renderShareSkills() {
-  skillsToShareBox.innerHTML = '';
-  shareSkills.forEach((skill, idx) => {
-    const skillDiv = document.createElement('div');
-    skillDiv.className = 'skill-box';
-    skillDiv.innerHTML = `
-      <span>${skill}</span>
-      <button class="remove-skill-btn" title="Remove skill" data-idx="${idx}">&times;</button>
-    `;
-    skillsToShareBox.appendChild(skillDiv);
-  });
-}
-
-function renderLearnSkills() {
-  skillsToLearnBox.innerHTML = '';
-  learnSkills.forEach((skill, idx) => {
-    const skillDiv = document.createElement('div');
-    skillDiv.className = 'skill-box';
-    skillDiv.innerHTML = `
-      <span>${skill}</span>
-      <button class="remove-skill-btn" title="Remove skill" data-idx="${idx}">&times;</button>
-    `;
-    skillsToLearnBox.appendChild(skillDiv);
-  });
-}
-
-addSkillBtn.addEventListener('click', () => {
-  const skill = newSkillInput.value.trim();
-  if (skill && !skills.includes(skill)) {
-    skills.push(skill);
-    newSkillInput.value = '';
-    renderSkills();
-  }
-});
-
-skillBoxContainer.addEventListener('click', (e) => {
-  if (e.target.classList.contains('remove-skill-btn')) {
-    const idx = parseInt(e.target.getAttribute('data-idx'));
-    skills.splice(idx, 1);
-    renderSkills();
-  }
-});
-
-addSkillToShareBtn.addEventListener('click', () => {
-  const skill = newSkillToShareInput.value.trim();
-  if (skill && !shareSkills.includes(skill)) {
-    shareSkills.push(skill);
-    newSkillToShareInput.value = '';
-    renderShareSkills();
-  }
-});
-
-skillsToShareBox.addEventListener('click', (e) => {
-  if (e.target.classList.contains('remove-skill-btn')) {
-    const idx = parseInt(e.target.getAttribute('data-idx'));
-    shareSkills.splice(idx, 1);
-    renderShareSkills();
-  }
-});
-
-addSkillToLearnBtn.addEventListener('click', () => {
-  const skill = newSkillToLearnInput.value.trim();
-  if (skill && !learnSkills.includes(skill)) {
-    learnSkills.push(skill);
-    newSkillToLearnInput.value = '';
-    renderLearnSkills();
-  }
-});
-
-skillsToLearnBox.addEventListener('click', (e) => {
-  if (e.target.classList.contains('remove-skill-btn')) {
-    const idx = parseInt(e.target.getAttribute('data-idx'));
-    learnSkills.splice(idx, 1);
-    renderLearnSkills();
-  }
-});
-
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    userName.textContent = "Not logged in";
-    userBio.textContent = "";
-    skillsToShare.innerHTML = "";
-    skillsToLearn.innerHTML = "";
-    stats[0].textContent = "0";
-    stats[1].textContent = "0";
-    return;
-  }
-  // Fetch user data from Firestore
-  let displayName = user.displayName || "";
-  let bio = "";
-  let teachSkills = [];
-  let connections = 0;
-  try {
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      if (data.displayName) displayName = data.displayName;
-      if (data.bio) bio = data.bio;
-      if (data.skillsTeach) teachSkills = data.skillsTeach;
+  // Utility: Render skills with instant remove
+  function renderSkills(skills, container, removeHandler) {
+    container.innerHTML = '';
+    if (skills && skills.length > 0) {
+      skills.forEach((skill, idx) => {
+        const span = document.createElement('span');
+        span.className = 'skill-chip';
+        span.textContent = skill;
+        // Add remove button
+        const btn = document.createElement('button');
+        btn.className = 'remove-skill-btn';
+        btn.innerHTML = '&times;';
+        btn.onclick = (e) => {
+          e.preventDefault();
+          removeHandler(idx);
+        };
+        span.appendChild(btn);
+        container.appendChild(span);
+      });
+    } else {
+      container.innerHTML = '<span style="color:#aaa;">No skills listed</span>';
     }
-  } catch (e) {
-    // fallback to auth data
   }
-  userName.textContent = displayName || "No Name";
-  userBio.textContent = bio || "Student on SkillBridge";
-  // Render teach skills
-  skillsToShare.innerHTML = (teachSkills.length > 0)
-    ? teachSkills.map(skill => `<span class="skill-chip">${skill}</span>`).join(' ')
-    : '<span style="color:#aaa;">No skills listed</span>';
-  // Update stats
-  stats[0].textContent = teachSkills.length;
-  stats[1].textContent = learnSkills.length;
-  stats[2].textContent = connections || 0;
-});
 
-// Optionally, initialize with some skills or load from storage
-renderSkills();
-renderShareSkills();
-renderLearnSkills();
+  // Auth state
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = '../login.html';
+      return;
+    }
+    currentUser = user;
+    userName.textContent = user.displayName || "No Name";
+    userEmail.textContent = user.email || "No Email";
+    userBio.textContent = "Loading bio...";
+
+    try {
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        currentUserData = userDoc.data();
+
+        // Display info
+        if (currentUserData.displayName) userName.textContent = currentUserData.displayName;
+        userBio.textContent = currentUserData.bio || "Student on SkillBridge";
+        if (currentUserData.photoURL) profilePic.src = currentUserData.photoURL;
+        else profilePic.src = "../assets/profile-placeholder.png";
+
+        // Render skills
+        renderSkills(currentUserData.skillsTeach || [], skillsToShareBox, removeSkillToShare);
+        renderSkills(currentUserData.skillsLearn || [], skillsToLearnBox, removeSkillToLearn);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      userBio.textContent = "Error loading profile data";
+    }
+  });
+
+  // Add skill to share
+  if (addSkillToShareBtn) {
+    addSkillToShareBtn.onclick = async () => {
+      const input = document.getElementById('newSkillToShareInput');
+      const skill = input.value.trim();
+      if (skill && currentUser) {
+        const userRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userRef);
+        let currentSkills = userDoc.data()?.skillsTeach || [];
+        if (!currentSkills.includes(skill)) {
+          currentSkills.push(skill);
+          await setDoc(userRef, { skillsTeach: currentSkills }, { merge: true });
+          renderSkills(currentSkills, skillsToShareBox, removeSkillToShare);
+        }
+        input.value = '';
+      }
+    };
+  }
+
+  // Add skill to learn
+  if (addSkillToLearnBtn) {
+    addSkillToLearnBtn.onclick = async () => {
+      const input = document.getElementById('newSkillToLearnInput');
+      const skill = input.value.trim();
+      if (skill && currentUser) {
+        const userRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userRef);
+        let currentSkills = userDoc.data()?.skillsLearn || [];
+        if (!currentSkills.includes(skill)) {
+          currentSkills.push(skill);
+          await setDoc(userRef, { skillsLearn: currentSkills }, { merge: true });
+          renderSkills(currentSkills, skillsToLearnBox, removeSkillToLearn);
+        }
+        input.value = '';
+      }
+    };
+  }
+
+  // Remove skill to share (INSTANT)
+  async function removeSkillToShare(idx) {
+    if (!currentUser) return;
+    const userRef = doc(db, "users", currentUser.uid);
+    const userDoc = await getDoc(userRef);
+    let currentSkills = userDoc.data()?.skillsTeach || [];
+    currentSkills.splice(idx, 1);
+    await setDoc(userRef, { skillsTeach: currentSkills }, { merge: true });
+    renderSkills(currentSkills, skillsToShareBox, removeSkillToShare);
+  }
+
+  // Remove skill to learn (INSTANT)
+  async function removeSkillToLearn(idx) {
+    if (!currentUser) return;
+    const userRef = doc(db, "users", currentUser.uid);
+    const userDoc = await getDoc(userRef);
+    let currentSkills = userDoc.data()?.skillsLearn || [];
+    currentSkills.splice(idx, 1);
+    await setDoc(userRef, { skillsLearn: currentSkills }, { merge: true });
+    renderSkills(currentSkills, skillsToLearnBox, removeSkillToLearn);
+  }
+
+  // Edit modal open/close
+  if (editProfileBtn) {
+    editProfileBtn.onclick = () => {
+      document.getElementById('editName').value = currentUser.displayName || '';
+      document.getElementById('editEmail').value = currentUser.email || '';
+      document.getElementById('editMobile').value = currentUserData.mobile || '';
+      document.getElementById('editBio').value = currentUserData.bio || '';
+      // DO NOT set fileInput.required at all!
+      profileEditModal.style.display = 'block';
+    };
+  }
+  if (closeEditModal) {
+    closeEditModal.onclick = () => {
+      profileEditModal.style.display = 'none';
+    };
+  }
+
+  // Edit profile form submit (photo is optional)
+  if (profileEditForm) {
+    profileEditForm.onsubmit = async (e) => {
+      e.preventDefault();
+      console.log("Form submitted!"); // Debug
+      const newName = document.getElementById('editName').value.trim();
+      const newEmail = document.getElementById('editEmail').value.trim();
+      const newMobile = document.getElementById('editMobile').value.trim();
+      const newBio = document.getElementById('editBio').value.trim();
+      const profilePicFile = document.getElementById('editProfilePic').files[0];
+      const msgDiv = document.getElementById('profileEditMsg');
+      msgDiv.textContent = '';
+
+      try {
+        // Update Auth profile
+        if (currentUser.displayName !== newName) {
+          await updateProfile(currentUser, { displayName: newName });
+          console.log("Display name updated");
+        }
+        if (currentUser.email !== newEmail) {
+          await currentUser.updateEmail(newEmail); // May require re-auth
+          console.log("Email updated");
+        }
+
+        let photoURL = currentUserData.photoURL || "";
+        if (profilePicFile) {
+          const fileRef = storageRef(storage, `profile_pics/${currentUser.uid}`);
+          await uploadBytes(fileRef, profilePicFile);
+          photoURL = await getDownloadURL(fileRef);
+          await updateProfile(currentUser, { photoURL });
+          console.log("Photo updated");
+        }
+
+        await setDoc(doc(db, "users", currentUser.uid), {
+          displayName: newName,
+          email: newEmail,
+          mobile: newMobile,
+          bio: newBio,
+          photoURL
+        }, { merge: true });
+        console.log("Firestore updated");
+
+        msgDiv.textContent = "Profile updated!";
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        msgDiv.textContent = "Error: " + err.message;
+        console.error(err);
+      }
+    };
+  }
+});
 

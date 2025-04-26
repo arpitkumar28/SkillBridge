@@ -18,7 +18,7 @@
         </div>
         <div class="menu-right">
             <div class="menu">
-                <a href="index.html" class="menu-link">Home</a>
+                <a href="../index.html" class="menu-link">Home</a>
                 <a href="#about" class="menu-link">About</a>
                 <a href="#footer" class="menu-link">Contact</a>
             </div>
@@ -35,8 +35,9 @@
                 </button>
             </div>
             <div class="profile-info-section">
-                <h1 id="userName">Your Name</h1>
-                <p id="userBio">Your bio or tagline</p>
+                <h1 id="userName">Loading...</h1>
+                <p id="userEmail" class="user-email">Loading...</p>
+                <p id="userBio" class="user-bio">Loading...</p>
                 <button class="edit-profile-btn" id="editProfileBtn">
                     <i class="fas fa-edit"></i> Edit Profile
                 </button>
@@ -66,12 +67,14 @@
                 <form id="profileEditForm">
                     <label>Name:</label>
                     <input type="text" id="editName" required>
+                    <label>Email:</label>
+                    <input type="email" id="editEmail" required>
+                    <label>Mobile Number:</label>
+                    <input type="text" id="editMobile">
                     <label>Bio:</label>
                     <input type="text" id="editBio" maxlength="80">
-                    <label>Skills to Share (comma separated):</label>
-                    <input type="text" id="editSkillsToShare">
-                    <label>Skills to Learn (comma separated):</label>
-                    <input type="text" id="editSkillsToLearn">
+                    <label>Profile Picture:</label>
+                    <input type="file" id="editProfilePic" accept="image/*">
                     <button type="submit" class="btn btn-primary" style="margin-top:1rem;">Save Changes</button>
                     <div id="profileEditMsg" style="margin-top:0.7rem;"></div>
                 </form>

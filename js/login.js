@@ -31,7 +31,7 @@ if (loginForm) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       successDiv.textContent = "Login successful! Redirecting...";
-      setTimeout(() => window.location.href = "pages/profile.html", 1000);
+      setTimeout(() => window.location.href = "pages/home.html", 1000);
     } catch (err) {
       errorDiv.textContent = err.message;
     }

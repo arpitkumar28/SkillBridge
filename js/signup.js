@@ -48,7 +48,15 @@ if (signupForm) {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: name });
-      // Optionally, save skills here if you add skill fields
+      
+      // Save user data to Firestore before redirecting
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        displayName: name,
+        email: email,
+        skillsTeach: [],
+        skillsLearn: []
+      });
+      
       successDiv.textContent = "Signup successful! Redirecting to login...";
       setTimeout(() => window.location.href = "login.html", 1200);
     } catch (err) {
