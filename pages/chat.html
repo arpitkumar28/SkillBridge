@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - SkillBridge</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="light-theme">
+    <nav class="navbar">
+        <!-- Same navbar as index.html -->
+    </nav>
+
+    <div class="chat-container">
+        <div class="chat-sidebar">
+            <div class="chat-search">
+                <input type="text" placeholder="Search conversations...">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="chat-list" id="chatList">
+                <!-- Chat list items will be added dynamically -->
+            </div>
+        </div>
+
+        <div class="chat-main">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <img src="../assets/images/default-avatar.png" alt="User Avatar">
+                    <div class="user-details">
+                        <h3>John Doe</h3>
+                        <span class="user-status">Online</span>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="video-call-btn">
+                        <i class="fas fa-video"></i>
+                    </button>
+                    <button class="more-options-btn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added dynamically -->
+            </div>
+
+            <div class="chat-input">
+                <button class="attachment-btn">
+                    <i class="fas fa-paperclip"></i>
+                </button>
+                <input type="text" placeholder="Type a message...">
+                <button class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/chat.js"></script>
+</body>
+</html> 

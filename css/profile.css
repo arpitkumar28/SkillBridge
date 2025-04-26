@@ -1,0 +1,143 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    min-height: 80vh;
+    background: #f7f8fa;
+}
+
+.profile-card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(44, 62, 80, 0.08);
+    padding: 2rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 420px;
+    width: 100%;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.profile-avatar-section {
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.profile-avatar-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e5ad4a;
+    background: #fff;
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #e5ad4a;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.10);
+}
+
+.profile-info-section {
+    text-align: center;
+    width: 100%;
+}
+
+.profile-info-section h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+    color: #2d3e50;
+}
+
+.profile-info-section p {
+    color: #888;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+}
+
+.profile-skills {
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+}
+
+.profile-skills strong {
+    color: #e5ad4a;
+}
+
+.edit-profile-btn {
+    background: #e5ad4a;
+    color: #fff;
+    border: none;
+    border-radius: 22px;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.edit-profile-btn:hover {
+    background: #cfa32e;
+    transform: scale(1.05);
+}
+
+.skill-chip {
+    display: inline-block;
+    background: #e5ad4a;
+    color: #fff;
+    border-radius: 12px;
+    padding: 0.2em 0.8em;
+    margin: 0.2em 0.2em 0.2em 0;
+    font-size: 0.98em;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 14px;
+    padding: 2rem 2rem 1.5rem 2rem;
+    box-shadow: 0 2px 16px rgba(44, 62, 80, 0.12);
+    min-width: 320px;
+    max-width: 95vw;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 1.2rem;
+    top: 1.2rem;
+    font-size: 1.5rem;
+    color: #888;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .profile-card, .modal-content {
+        padding: 1.2rem 0.7rem;
+        min-width: unset;
+    }
+}

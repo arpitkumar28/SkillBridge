@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SkillBridge</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="light-theme">
+    <nav class="navbar">
+        <img src="../assets/logo.png" alt="SkillBridge Logo" class="logo">
+        <span class="brand">SkillBridge</span>
+        <div class="menu">
+            <a href="index.html" class="menu-link">Home</a>
+            <a href="#about" class="menu-link">About</a>
+            <a href="#footer" class="menu-link">Contact</a>
+        </div>
+    </nav>
+
+    <main class="profile-container">
+        <div class="profile-card" id="profileCard">
+            <div class="profile-avatar-section">
+                <img id="profilePic" src="#" alt="Profile Picture" class="profile-avatar-img">
+                <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
+                <button class="edit-avatar-btn" id="editAvatarBtn" title="Change profile picture">
+                    <i class="fas fa-camera"></i>
+                </button>
+            </div>
+            <div class="profile-info-section">
+                <h1 id="userName">Your Name</h1>
+                <p id="userBio">Your bio or tagline</p>
+                <div class="profile-skills">
+                    <div>
+                        <strong>Skills to Share:</strong>
+                        <span id="skillsToShare"></span>
+                    </div>
+                    <div>
+                        <strong>Skills to Learn:</strong>
+                        <span id="skillsToLearn"></span>
+                    </div>
+                </div>
+                <button class="edit-profile-btn" id="editProfileBtn">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+        </div>
+        <div id="profileEditModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" id="closeEditModal">&times;</span>
+                <h2>Edit Profile</h2>
+                <form id="profileEditForm">
+                    <label>Name:</label>
+                    <input type="text" id="editName" required>
+                    <label>Bio:</label>
+                    <input type="text" id="editBio" maxlength="80">
+                    <label>Skills to Share (comma separated):</label>
+                    <input type="text" id="editSkillsToShare">
+                    <label>Skills to Learn (comma separated):</label>
+                    <input type="text" id="editSkillsToLearn">
+                    <button type="submit" class="btn btn-primary" style="margin-top:1rem;">Save Changes</button>
+                    <div id="profileEditMsg" style="margin-top:0.7rem;"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="../js/skillbridge-profile.js"></script>
+</body>
+</html> 
