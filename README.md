@@ -30,8 +30,6 @@ Built with ❤ during a hackathon, SkillBridge empowers individuals to exchange 
 - *GitHub Repository*: https://arpitkumar28.github.io/SkillBridge/
 - *Live Demo*: https://skill-bridge-lake-gamma.vercel.app/
 
-> 🔖 Replace the above links after deployment!
-
 ---
 
 ## 👨‍💻 Team Credits
