@@ -2,18 +2,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import config from './config.js';
 
 // Only declare config/app/auth/db ONCE
-const firebaseConfig = {
-  apiKey: "AIzaSyBbWgTUhdvtf00UnvHOKz-_cqBrQggdBo4",
-  authDomain: "skillbridge-90392.firebaseapp.com",
-  projectId: "skillbridge-90392",
-  storageBucket: "skillbridge-90392.appspot.com",
-  messagingSenderId: "208543781402",
-  appId: "1:208543781402:web:671bc3ebdf06fc6b18b7a3",
-  measurementId: "G-DPPSFN4CLG"
-};
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config.firebase);
 const auth = getAuth(app);
 const db = getFirestore(app);
 

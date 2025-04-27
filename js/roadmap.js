@@ -2,19 +2,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyB8QJwXQJwXQJwXQJwXQJwXQJwXQJwXQJw",
-    authDomain: "skillbridge-12345.firebaseapp.com",
-    projectId: "skillbridge-12345",
-    storageBucket: "skillbridge-12345.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abcdef1234567890abcdef"
-};
+import config from './config.js';
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config.firebase);
 const auth = getAuth(app);
 const db = getFirestore(app);
 

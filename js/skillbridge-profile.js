@@ -3,19 +3,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+import config from './config.js';
 
-// Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyBbWgTUhdvtf00UnvHOKz-_cqBrQggdBo4",
-  authDomain: "skillbridge-90392.firebaseapp.com",
-  projectId: "skillbridge-90392",
-  storageBucket: "skillbridge-90392.appspot.com",
-  messagingSenderId: "208543781402",
-  appId: "1:208543781402:web:671bc3ebdf06fc6b18b7a3",
-  measurementId: "G-DPPSFN4CLG"
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config.firebase);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);

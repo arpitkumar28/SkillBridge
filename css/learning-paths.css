@@ -153,56 +153,6 @@
     transform: translateX(5px);
 }
 
-/* Learning Paths List Styles */
-.learning-paths-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.path-link {
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all 0.3s ease;
-}
-
-.path-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.path-item i {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    transition: transform 0.3s ease;
-}
-
-.path-item span {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.path-link:hover .path-item {
-    transform: translateX(10px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    background: var(--primary-color);
-    color: white;
-}
-
-.path-link:hover .path-item i {
-    transform: translateX(5px);
-    color: white;
-}
-
 /* Welcome Section */
 .welcome-section {
     padding: 2rem;
@@ -239,14 +189,6 @@
     }
 
     .path-card {
-        padding: 1.25rem;
-    }
-
-    .learning-paths-list {
-        padding: 1rem;
-    }
-
-    .path-item {
         padding: 1.25rem;
     }
 

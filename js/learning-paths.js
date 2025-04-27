@@ -2,120 +2,24 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyB8QJwXQJwXQJwXQJwXQJwXQJwXQJwXQJw",
-    authDomain: "skillbridge-12345.firebaseapp.com",
-    projectId: "skillbridge-12345",
-    storageBucket: "skillbridge-12345.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abcdef1234567890abcdef"
-};
+import config from './config.js';
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config.firebase);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 // DOM Elements
 const logoutBtn = document.getElementById('logoutBtn');
-const userGreeting = document.getElementById('userGreeting');
-const learningPathsContainer = document.getElementById('learningPathsContainer');
-
-// Learning paths data
-const learningPaths = [
-    {
-        id: 'fullstack',
-        title: 'Full Stack Development',
-        url: 'fullstack-path.html'
-    },
-    {
-        id: 'frontend',
-        title: 'Frontend Development',
-        url: 'frontend-path.html'
-    },
-    {
-        id: 'backend',
-        title: 'Backend Development',
-        url: 'backend-path.html'
-    },
-    {
-        id: 'data-science',
-        title: 'Data Science',
-        url: 'data-science-path.html'
-    },
-    {
-        id: 'ai-ml',
-        title: 'Artificial Intelligence',
-        url: 'ai-ml-path.html'
-    },
-    {
-        id: 'blockchain',
-        title: 'Blockchain Development',
-        url: 'blockchain-path.html'
-    },
-    {
-        id: 'game-dev',
-        title: 'Game Development',
-        url: 'game-dev-path.html'
-    },
-    {
-        id: 'ui-ux',
-        title: 'UI/UX Design',
-        url: 'ui-ux-path.html'
-    },
-    {
-        id: 'product-management',
-        title: 'Product Management',
-        url: 'product-management-path.html'
-    },
-    {
-        id: 'digital-marketing',
-        title: 'Digital Marketing',
-        url: 'digital-marketing-path.html'
-    },
-    {
-        id: 'project-management',
-        title: 'Project Management',
-        url: 'project-management-path.html'
-    },
-    {
-        id: 'technical-writing',
-        title: 'Technical Writing',
-        url: 'technical-writing-path.html'
-    },
-    {
-        id: 'dev-ops',
-        title: 'DevOps Engineering',
-        url: 'devops-path.html'
-    },
-    {
-        id: 'cloud-architect',
-        title: 'Cloud Architecture',
-        url: 'cloud-architect-path.html'
-    },
-    {
-        id: 'machine-learning',
-        title: 'Machine Learning Engineering',
-        url: 'ml-engineering-path.html'
-    },
-    {
-        id: 'data-engineering',
-        title: 'Data Engineering',
-        url: 'data-engineering-path.html'
-    }
-];
+const startPathBtns = document.querySelectorAll('.start-path-btn');
+const showMoreBtn = document.getElementById('showMoreBtn');
+const hiddenPaths = document.querySelectorAll('.hidden-path');
 
 // Handle authentication state
 onAuthStateChanged(auth, async (user) => {
     if (!user) {
         window.location.href = '../login.html';
     } else {
-        // Update greeting with user's name if available
-        if (user.displayName) {
-            userGreeting.textContent = `Welcome back, ${user.displayName}!`;
-        }
         await loadUserProgress(user.uid);
     }
 });
@@ -130,9 +34,11 @@ async function loadUserProgress(userId) {
             
             // Update UI with active path
             if (activePath) {
-                const pathLink = document.querySelector(`[data-path-id="${activePath}"]`);
-                if (pathLink) {
-                    pathLink.classList.add('active');
+                const pathCard = document.getElementById(`${activePath}-path`);
+                if (pathCard) {
+                    pathCard.classList.add('active');
+                    const startBtn = pathCard.querySelector('.start-path-btn');
+                    startBtn.textContent = 'Continue Learning';
                 }
             }
         }
@@ -141,39 +47,56 @@ async function loadUserProgress(userId) {
     }
 }
 
-// Display learning paths
-function displayLearningPaths() {
-    learningPathsContainer.innerHTML = '';
-    learningPaths.forEach(path => {
-        const pathLink = document.createElement('a');
-        pathLink.href = path.url;
-        pathLink.className = 'path-link';
-        pathLink.setAttribute('data-path-id', path.id);
-        pathLink.innerHTML = `
-            <div class="path-item">
-                <i class="fas fa-arrow-right"></i>
-                <span>${path.title}</span>
-            </div>
-        `;
-        learningPathsContainer.appendChild(pathLink);
+// Handle path selection
+startPathBtns.forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const path = btn.getAttribute('data-path');
+        
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                // Update user's active path
+                await updateDoc(doc(db, 'users', user.uid), {
+                    activePath: path
+                });
+                
+                // Redirect to the selected path
+                window.location.href = `path-${path}.html`;
+            }
+        } catch (error) {
+            console.error('Error selecting path:', error);
+        }
     });
-}
+});
+
+// Show More Button functionality
+showMoreBtn.addEventListener('click', () => {
+    const isExpanded = showMoreBtn.classList.contains('expanded');
+    
+    if (!isExpanded) {
+        // Show hidden paths
+        hiddenPaths.forEach(path => {
+            path.classList.add('visible');
+        });
+        showMoreBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Show Less';
+    } else {
+        // Hide paths
+        hiddenPaths.forEach(path => {
+            path.classList.remove('visible');
+        });
+        showMoreBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Show More';
+    }
+    
+    showMoreBtn.classList.toggle('expanded');
+});
 
 // Handle logout
-function handleLogout() {
-    signOut(auth).then(() => {
+logoutBtn.addEventListener('click', async () => {
+    try {
+        await signOut(auth);
         window.location.href = '../login.html';
-    }).catch((error) => {
+    } catch (error) {
         console.error('Error signing out:', error);
-    });
-}
-
-// Initialize the page
-document.addEventListener('DOMContentLoaded', () => {
-    displayLearningPaths();
-    
-    // Handle logout
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', handleLogout);
     }
 }); 

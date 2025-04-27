@@ -32,7 +32,7 @@ const defaultPaths = [
                 items: ['MongoDB', 'Database Design', 'Cloud Deployment', 'DevOps Basics']
             }
         ],
-        url: 'fullstack-path.html'
+        url: 'https://roadmap.sh/full-stack'
     },
     {
         id: 'frontend',
@@ -60,7 +60,7 @@ const defaultPaths = [
                 items: ['Webpack', 'Jest', 'Cypress', 'CI/CD']
             }
         ],
-        url: 'frontend-path.html'
+        url: 'https://roadmap.sh/frontend'
     },
     {
         id: 'backend',
@@ -88,7 +88,7 @@ const defaultPaths = [
                 items: ['REST', 'GraphQL', 'WebSockets', 'Authentication']
             }
         ],
-        url: 'backend-path.html'
+        url: 'https://roadmap.sh/backend'
     },
     {
         id: 'mobile',
@@ -116,7 +116,7 @@ const defaultPaths = [
                 items: ['Push Notifications', 'Offline Support', 'Location Services', 'Payment Integration']
             }
         ],
-        url: 'mobile-path.html'
+        url: 'https://roadmap.sh/android'
     },
     {
         id: 'devops',
@@ -144,7 +144,7 @@ const defaultPaths = [
                 items: ['DevSecOps', 'Security Scanning', 'Compliance', 'Access Control']
             }
         ],
-        url: 'devops-path.html'
+        url: 'https://roadmap.sh/devops'
     },
     {
         id: 'data-science',
@@ -172,7 +172,7 @@ const defaultPaths = [
                 items: ['Hadoop', 'Spark', 'Data Pipelines', 'Cloud Platforms']
             }
         ],
-        url: 'data-science-path.html'
+        url: 'https://roadmap.sh/ai-data-scientist'
     },
     {
         id: 'ai-ml',
@@ -200,7 +200,7 @@ const defaultPaths = [
                 items: ['Transfer Learning', 'Federated Learning', 'Edge AI', 'Ethics in AI']
             }
         ],
-        url: 'ai-ml-path.html'
+        url: 'https://roadmap.sh/ai-engineer'
     },
     {
         id: 'cybersecurity',
@@ -228,7 +228,7 @@ const defaultPaths = [
                 items: ['Cloud Security', 'IoT Security', 'Forensics', 'Compliance']
             }
         ],
-        url: 'cybersecurity-path.html'
+        url: 'https://roadmap.sh/cyber-security'
     },
     {
         id: 'cloud',
@@ -256,7 +256,7 @@ const defaultPaths = [
                 items: ['CI/CD', 'Containerization', 'Kubernetes', 'Infrastructure as Code']
             }
         ],
-        url: 'cloud-path.html'
+        url: 'https://roadmap.sh/aws'
     },
     {
         id: 'blockchain',
@@ -284,7 +284,7 @@ const defaultPaths = [
                 items: ['NFTs', 'DAO', 'Layer 2 Solutions', 'Blockchain Security']
             }
         ],
-        url: 'blockchain-path.html'
+        url: 'https://roadmap.sh/blockchain'
     },
     {
         id: 'game-dev',
@@ -312,7 +312,7 @@ const defaultPaths = [
                 items: ['Level Design', 'Game Mechanics', 'User Experience', 'Monetization']
             }
         ],
-        url: 'game-dev-path.html'
+        url: 'https://roadmap.sh/game-developer'
     },
     {
         id: 'ui-ux',
@@ -340,7 +340,7 @@ const defaultPaths = [
                 items: ['Design Systems', 'Accessibility', 'Motion Design', 'Responsive Design']
             }
         ],
-        url: 'ui-ux-path.html'
+        url: 'https://roadmap.sh/ux-design'
     },
     {
         id: 'product-management',
@@ -368,7 +368,7 @@ const defaultPaths = [
                 items: ['Go-to-Market Strategy', 'Beta Testing', 'Analytics', 'Growth Hacking']
             }
         ],
-        url: 'product-management-path.html'
+        url: 'https://roadmap.sh/product-manager'
     },
     {
         id: 'digital-marketing',
@@ -396,7 +396,7 @@ const defaultPaths = [
                 items: ['Marketing Automation', 'CRM', 'Lead Generation', 'Brand Management']
             }
         ],
-        url: 'digital-marketing-path.html'
+        url: 'https://roadmap.sh/devrel'
     },
     {
         id: 'data-analytics',
@@ -424,7 +424,7 @@ const defaultPaths = [
                 items: ['Predictive Analytics', 'Time Series', 'Customer Analytics', 'A/B Testing']
             }
         ],
-        url: 'data-analytics-path.html'
+        url: 'https://roadmap.sh/data-analyst'
     },
     {
         id: 'project-management',
@@ -452,7 +452,7 @@ const defaultPaths = [
                 items: ['Team Management', 'Stakeholder Communication', 'Conflict Resolution', 'Budgeting']
             }
         ],
-        url: 'project-management-path.html'
+        url: 'https://roadmap.sh/product-manager'
     },
     {
         id: 'quality-assurance',
@@ -508,7 +508,7 @@ const defaultPaths = [
                 items: ['Authentication', 'Authorization', 'Encryption', 'Compliance']
             }
         ],
-        url: 'system-design-path.html'
+        url: 'https://roadmap.sh/system-design'
     },
     {
         id: 'embedded-systems',
@@ -536,7 +536,7 @@ const defaultPaths = [
                 items: ['Real-time Systems', 'Power Management', 'Security', 'Testing']
             }
         ],
-        url: 'embedded-systems-path.html'
+        url: 'https://roadmap.sh/cpp'
     },
     {
         id: 'technical-writing',
@@ -564,7 +564,7 @@ const defaultPaths = [
                 items: ['Localization', 'Accessibility', 'Version Control', 'Collaboration']
             }
         ],
-        url: 'technical-writing-path.html'
+        url: 'https://roadmap.sh/technical-writer'
     },
     {
         id: 'dev-ops',
@@ -592,7 +592,7 @@ const defaultPaths = [
                 items: ['DevSecOps', 'Security Scanning', 'Compliance', 'Access Control']
             }
         ],
-        url: 'devops-path.html'
+        url: 'https://roadmap.sh/devops'
     },
     {
         id: 'cloud-architect',
@@ -648,7 +648,7 @@ const defaultPaths = [
                 items: ['Transfer Learning', 'Federated Learning', 'Edge ML', 'Ethics']
             }
         ],
-        url: 'ml-engineering-path.html'
+        url: 'https://roadmap.sh/python'
     },
     {
         id: 'data-engineering',
@@ -676,7 +676,7 @@ const defaultPaths = [
                 items: ['AWS Glue', 'Azure Data Factory', 'Google Dataflow', 'Snowflake']
             }
         ],
-        url: 'data-engineering-path.html'
+        url: 'https://roadmap.sh/ai-engineer'
     }
 ];
 
